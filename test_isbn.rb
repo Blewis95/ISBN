@@ -15,4 +15,15 @@ class TestISBN < Minitest::Test
 		assert_equal("12345", isbn_dash_deleter("1-2-3-4-5"))
 	end
 
+	def test_gets_rid_of_spaces
+		assert_equal("12345", isbn_space_deleter("1 2 3 4 5"))
+	end
+
+	def test_successful_case_isbn10
+		assert_equal(true, isbn_10_sumcheck("0471958697"))
+	end
+
+	def test_failed_case_isbn10
+		assert_equal(false,isbn_10_sumcheck("4780470059029"))
+	end
 end
