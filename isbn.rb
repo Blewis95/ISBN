@@ -55,6 +55,67 @@ def isbn_10_sumcheck(isbn_num)
 	end
 
 end
-# def isbn_13_checker
 
-# end
+
+def isbn_13_checker(isbn_num13)
+	if ((isbn_num13.length < 13) || (isbn_num13.length > 13))
+		return false
+	else
+		return true
+	end
+end
+
+def isbn_13_sumcheck(isbn_num13)
+
+	isbn_13_checker(isbn_num13)
+	isbn_dash_deleter(isbn_num13)
+	isbn_space_deleter(isbn_num13)
+
+	isbn_array = isbn_num13.split("")
+	array_length = isbn_array.length
+
+	#puts array_length
+
+	sum = 0
+	isbn_number_array = Array.new
+
+	(array_length).times do |i|
+		isbn_number_array[i] = isbn_array[i].to_i
+	end
+
+	#print isbn_number_array
+
+
+	for i in 0..(array_length - 2)
+		if (i % 2 == 1)
+			sum += 3 * isbn_number_array[i]
+
+			print isbn_number_array[i], " "
+			puts sum
+			
+		else
+			sum += 1 * isbn_number_array[i]
+
+			print isbn_number_array[i], " "
+			puts sum
+		end
+		#puts isbn_number_array[i - 1]
+	end
+
+	print sum
+
+	checksum = sum % 10
+
+	checksum = 10 - checksum
+
+	checksum = checksum % 10
+
+	#print checksum
+
+	if checksum == isbn_number_array.last
+		return true
+	else
+		return false
+	end
+
+end
