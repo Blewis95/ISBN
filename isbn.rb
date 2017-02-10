@@ -1,43 +1,27 @@
-def isbn_10_checker(isbn_num)
-	if ((isbn_num.length < 10) || (isbn_num.length > 10))
-		return false
+def valid_isbn?(isbn_string)								#Main Function
+	new_num = isbn_dash_and_space_deleter(isbn_string)		#runs the function to take the inputed string and delete the spaces and dashed in it.
+
+	# puts new_num.length 									#for debugging purposes (lines 4-6)
+	# puts check_for_symbols(new_num)
+	# puts isbn_10_x_check?(new_num)
+
+	if (new_num.length == 10) && (check_for_symbols(new_num)) && isbn_10_x_check?(new_num)
+		isbn_10_sumcheck(new_num)
+	elsif (new_num.length == 13) && (check_for_symbols(new_num))
+		isbn_13_sumcheck(new_num)
 	else
-		return true
+		return false
 	end
+
 end
 
-def isbn_dash_deleter(isbn_num)
-	new_num = isbn_num.delete"-"
+def isbn_dash_and_space_deleter(isbn_num)
+	new_num = isbn_num.delete("-")
+	new_num = new_num.delete(" ")
 	return new_num
 end
-
-def isbn_space_deleter(isbn_num)
-	new_num = isbn_num.delete" "
-	return new_num
-end
-
-# def isbn_invalid_characters_input(isbn_num)
-# 	if (isbn_num.class != String)
-# 		return "Error entry must be a string"
-# 	else
-# 		isbn_array = isbn_num.split("")
-
-# 		(isbn_array.length).times do |x|
-# 			if (isbn_array[x].to_i != Fixnum)
-# 				return "Error, Entry must be a String of Fixnums"
-# 			end
-# 		end
-# 	end
-		
-# end
 
 def isbn_10_sumcheck(isbn_num)
-
-	isbn_10_checker(isbn_num)
-	isbn_dash_deleter(isbn_num)
-	isbn_space_deleter(isbn_num)
-	
-	# error_holder = isbn_invalid_characters_input(isbn_num)
 
 	isbn_array = isbn_num.split("")
 	array_length = isbn_array.length
@@ -67,8 +51,7 @@ def isbn_10_sumcheck(isbn_num)
 
 	if checksum == isbn_number_array.last
 		return true
-	# elsif (error_holder == "Error entry must be a string") || (error_holder == "Error, Entry must be a String of Fixnums")
-	# 	return error_holder
+	
 	else
 		return false
 	end
@@ -76,21 +59,17 @@ def isbn_10_sumcheck(isbn_num)
 end
 
 
-def isbn_13_checker(isbn_num13)
-	if ((isbn_num13.length < 13) || (isbn_num13.length > 13))
-		return false
+def isbn_13_checker(isbn_num)
+	if (isbn_num.length == 13)
+		return true		
 	else
-		return true
+		return false
 	end
 end
 
-def isbn_13_sumcheck(isbn_num13)
+def isbn_13_sumcheck(isbn_num)
 
-	isbn_13_checker(isbn_num13)
-	isbn_dash_deleter(isbn_num13)
-	isbn_space_deleter(isbn_num13)
-
-	isbn_array = isbn_num13.split("")
+	isbn_array = isbn_num.split("")
 	array_length = isbn_array.length
 
 	#puts array_length
@@ -115,13 +94,13 @@ def isbn_13_sumcheck(isbn_num13)
 		else
 			sum += 1 * isbn_number_array[i]
 
-			# print isbn_number_array[i], " "
+			#print isbn_number_array[i], " "
 			# puts sum
 		end
-		#puts isbn_number_array[i - 1]
+		#puts isbn_number_array[i]
 	end
 
-	# print sum
+	#print sum
 
 	checksum = sum % 10
 
@@ -129,7 +108,7 @@ def isbn_13_sumcheck(isbn_num13)
 
 	checksum = checksum % 10
 
-	#print checksum
+	#puts checksum
 
 	if checksum == isbn_number_array.last
 		return true
@@ -137,4 +116,35 @@ def isbn_13_sumcheck(isbn_num13)
 		return false
 	end
 
+end
+
+
+def check_for_symbols(symbol_check)
+	symbol_check2 = symbol_check.split("")
+	array = Array.new
+
+	symbol_check2.each do |holder|
+		if (holder == "0") || (holder == "1") || (holder == "2") || (holder == "3") || (holder == "4") || (holder == "5") || (holder == "6") || (holder == "7") || (holder == "8") || (holder == "9")
+
+			array.push(holder)
+		end
+	end
+
+	if (array.length != symbol_check.length)
+		return false
+	else
+		return true
+	end
+end
+
+def isbn_10_x_check?(isbn)
+	if isbn.upcase.include?("X")
+		if (isbn.upcase.index("X") == isbn.length - 1)
+			return true
+		else
+			return false
+		end
+	else
+		return true
+	end
 end
